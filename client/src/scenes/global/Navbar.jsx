@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Badge, Box, IconButton } from "@mui/material";
+import { Badge, Box, IconButton, Typography } from "@mui/material";
 import {
   PersonOutline,
   ShoppingBagOutlined,
@@ -8,11 +8,12 @@ import {
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import { shades } from "../../theme";
-// import { setIsCartOpen } from "../../state";
+import { setIsCartOpen } from "../../state";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart);
   return (
     <nav className="">
       <Box
@@ -22,7 +23,7 @@ const Navbar = () => {
         justifyContent="center"
         width="100%"
         height="60px"
-        backgroundColor="rgba(0,255,255,0.8)"
+        backgroundColor={shades.neutral[100] + "F0"}
         position="fixed"
         top="0"
         left="0"
@@ -44,7 +45,9 @@ const Navbar = () => {
             }}
             color={shades.secondary[600]}
           >
-            RIDE RITE
+            <Typography>
+              <h2>RIDE RITE</h2>
+            </Typography>
           </Box>
           <Box
             className=""
@@ -60,9 +63,27 @@ const Navbar = () => {
             <IconButton sx={{ color: "black" }}>
               <PersonOutline />
             </IconButton>
-            <IconButton sx={{ color: "black" }}>
-              <ShoppingBagOutlined />
-            </IconButton>
+            <Badge
+              badgeContent={cart.length}
+              color="secondary"
+              invisible={cart.length === 0}
+              sx={{
+                "& .MuiBadge-badge": {
+                  right: 5,
+                  top: 5,
+                  padding: "0 4px ",
+                  height: "14px",
+                  minWidth: "13px",
+                },
+              }}
+            >
+              <IconButton
+                onClick={() => dispatch(setIsCartOpen())}
+                sx={{ color: "black" }}
+              >
+                <ShoppingBagOutlined />
+              </IconButton>
+            </Badge>
             <IconButton sx={{ color: "black" }}>
               <MenuOutlined />
             </IconButton>
