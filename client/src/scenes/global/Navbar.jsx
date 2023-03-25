@@ -45,8 +45,11 @@ const Navbar = () => {
             }}
             color={shades.secondary[600]}
           >
-            <Typography>
-              <h2>RIDE RITE</h2>
+            <Typography
+              variant="h3"
+              sx={{ textShadow: "1px 1px 1px #131313,-1px -1px 1px #131313;" }}
+            >
+              RIDE RITE
             </Typography>
           </Box>
           <Box
