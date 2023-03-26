@@ -19,8 +19,8 @@ import { Collapse } from "@mui/material";
 
 const FlexBox = styled(Box)`
   display: flex;
-  justifycontent: space-between;
-  alignitems: center;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const CartMenu = () => {
@@ -44,7 +44,7 @@ const CartMenu = () => {
         height="100%"
         padding="20px"
         zIndex="10"
-        backgroundColor="#01010122"
+        backgroundColor="#01010155"
         overflow="auto"
       >
         {/* modal */}
@@ -81,7 +81,8 @@ const CartMenu = () => {
                           alt={item?.name}
                           width="123px"
                           height="164px"
-                          src={`http:localhost:1337${item?.attributes?.image?.data?.attributes?.formats?.medium?.url}`}
+                          style={{ cursor: "pointer", objectFit: "cover" }}
+                          src={`http://localhost:1337${item?.attributes?.image?.data?.attributes?.formats?.medium?.url}`}
                         />
                       </Box>
 
@@ -90,21 +91,21 @@ const CartMenu = () => {
                         <FlexBox mb="5px">
                           <Typography fontWeight="bold">
                             {item?.attributes.name}
+                            <IconButton
+                              onClick={() =>
+                                dispatch(removeFromCart({ id: item?.id }))
+                              }
+                            >
+                              <DeleteIcon />
+                            </IconButton>
                           </Typography>
-                          <IconButton
-                            onClick={() =>
-                              dispatch(removeFromCart({ id: item?.id }))
-                            }
-                          >
-                            <DeleteIcon />
-                          </IconButton>
                         </FlexBox>
-                        <Typography>
+                        <Typography variant="subtitle2" mb="1rem">
                           {item?.attributes.shortDescription}
                         </Typography>
 
                         {/* INCREACE OR DECREACE ITEMS NUMBERS */}
-                        <FlexBox>
+                        <FlexBox width="100%">
                           <Box
                             display="flex"
                             alignItems="center"
@@ -143,7 +144,9 @@ const CartMenu = () => {
               <Box m="20px 0">
                 <FlexBox m="20px 0">
                   <Typography fontWeight="bold">SUBTOTAL:</Typography>
-                  <Typography fontWeight="bold">{totalPrice || 0}</Typography>
+                  <Typography fontWeight="bold">
+                    {parseInt(totalPrice * 100) / 100 || 0}
+                  </Typography>
                 </FlexBox>
                 <Button
                   sx={{

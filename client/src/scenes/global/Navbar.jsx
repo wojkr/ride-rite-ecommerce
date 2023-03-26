@@ -13,7 +13,7 @@ import { setIsCartOpen } from "../../state";
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const cart = useSelector((state) => state.cart);
+  const { cart } = useSelector((state) => state.cart);
   return (
     <nav className="">
       <Box
@@ -22,7 +22,7 @@ const Navbar = () => {
         alignItems="center"
         justifyContent="center"
         width="100%"
-        height="60px"
+        minHeight="60px"
         backgroundColor={shades.neutral[100] + "F0"}
         position="fixed"
         top="0"
@@ -46,8 +46,8 @@ const Navbar = () => {
             color={shades.secondary[600]}
           >
             <Typography
-              variant="h3"
-              sx={{ textShadow: "1px 1px 1px #131313,-1px -1px 1px #131313;" }}
+              variant="h2"
+              sx={{ textShadow: "-1px 0px 1px #131313" }}
             >
               RIDE RITE
             </Typography>
@@ -71,10 +71,10 @@ const Navbar = () => {
               color="secondary"
               invisible={cart.length === 0}
               sx={{
-                "& .MuiBadge-badge": {
+                ".MuiBadge-badge": {
                   right: 5,
                   top: 5,
-                  padding: "0 4px ",
+                  padding: "0 4px",
                   height: "14px",
                   minWidth: "13px",
                 },
