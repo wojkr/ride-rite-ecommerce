@@ -6,6 +6,7 @@ import Checkout from "./scenes/checkout/Checkout";
 import Conformation from "./scenes/checkout/Conformation";
 import Navbar from "./scenes/global/Navbar";
 import CartMenu from "./scenes/global/CartMenu";
+import Footer from "./scenes/global/Footer";
 
 const ScrollToTop = () => {
   //when go to new page starts at the top, not in the middle
@@ -29,6 +30,7 @@ function App() {
           <Route path="checkout/success" element={<Conformation />} />
         </Routes>
         <CartMenu />
+        <Footer />
       </BrowserRouter>
     </div>
   );
