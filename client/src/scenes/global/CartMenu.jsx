@@ -66,7 +66,7 @@ const CartMenu = () => {
                 Shopping bag ({cart?.length || 0})
               </Typography>
               <IconButton onClick={() => dispatch(setIsCartOpen())}>
-                <CloseIcon sx={{ width: "2.3rem" }} />
+                <CloseIcon />
               </IconButton>
             </FlexBox>
             {/* CART LIST */}
