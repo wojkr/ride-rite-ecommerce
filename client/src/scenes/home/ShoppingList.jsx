@@ -39,7 +39,7 @@ const ShoppingList = () => {
   const topRated = items.filter((i) => i.attributes.category === "topRated");
   return (
     <Box className="" width="80%" margin="80px auto">
-      <Typography variant="h3" textAlign="center">
+      <Typography variant="h2" textAlign="center">
         Our Feaetured <b>Products</b>
       </Typography>
       <Tabs
