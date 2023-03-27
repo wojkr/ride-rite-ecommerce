@@ -27,13 +27,10 @@ const Footer = () => {
               RIDE RITE
             </Typography>
             <Typography mb="1rem" variant="subtitle2" lineHeight="200%">
-              Ride Rite is your go-to online destination for quality bicycles
-              and accessories. We offer a wide range of bikes, accessories, and
-              parts, carefully selected for their quality and performance. Our
-              experienced team is dedicated to providing exceptional customer
-              service, helping you find the perfect bike and gear for your
-              needs. We offer fast shipping and competitive pricing. Thank you
-              for choosing Ride Rite for all your cycling needs!
+              Our experienced team is dedicated to providing exceptional
+              customer service, helping you find the perfect bike and gear for
+              your needs. We offer fast shipping and competitive pricing. Thank
+              you for choosing Ride Rite for all your cycling needs!
             </Typography>
           </Box>
           <Box>
