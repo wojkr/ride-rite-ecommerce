@@ -14,7 +14,15 @@ export const cartSlice = createSlice({
       state.items = action.payload;
     },
     addToCart: (state, action) => {
-      state.cart.push(action.payload.item);
+      let flag = true;
+      state.cart = state.cart.map((item) => {
+        if (item.id === action.payload.item.id) {
+          flag = false;
+          item.count += action.payload.item.count;
+        }
+        return item;
+      });
+      if (flag) state.cart.push(action.payload.item);
     },
     removeFromCart: (state, action) => {
       state.cart = state.cart.filter((item) => item.id !== action.payload.id);

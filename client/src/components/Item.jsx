@@ -43,7 +43,7 @@ const Item = ({ item, width }) => {
       >
         <img
           src={`http://localhost:1337${url}`}
-          alt={item.name}
+          alt={name}
           width="300px"
           height="400px"
           onClick={() => navigate(`/item/${item.id}`)}
@@ -76,7 +76,10 @@ const Item = ({ item, width }) => {
             </Box>
             {/* BUTTON */}
             <Button
-              onClick={() => dispatch(addToCart({ item: { ...item, count } }))}
+              onClick={() => {
+                dispatch(addToCart({ item: { ...item, count } }));
+                setCount(1);
+              }}
               sx={{
                 backgroundColor: shades.primary[400],
                 color: "white",

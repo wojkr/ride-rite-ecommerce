@@ -73,7 +73,11 @@ const CartMenu = () => {
             <Box>
               {cart?.map((item) => {
                 return (
-                  <Box key={`${item?.attributes?.name}-${item?.id}`}>
+                  <Box
+                    key={`${item?.attributes?.name}-${Math.random()}-${
+                      item?.id
+                    }`}
+                  >
                     <FlexBox p="15px 0">
                       {/* ITEM IMAGE */}
                       <Box flex="1 1 40%">

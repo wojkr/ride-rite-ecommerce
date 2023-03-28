@@ -9,11 +9,14 @@ import CartMenu from "./scenes/global/CartMenu";
 import Footer from "./scenes/global/Footer";
 
 const ScrollToTop = () => {
-  //when go to new page starts at the top, not in the middle
   const { pathname } = useLocation();
+
   useEffect(() => {
-    window.scrollTo = (0, 0);
+    if (typeof window !== "undefined") {
+      window.scrollTo(0, 0);
+    }
   }, [pathname]);
+
   return null;
 };
 

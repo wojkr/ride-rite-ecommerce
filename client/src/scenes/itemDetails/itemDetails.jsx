@@ -1,16 +1,23 @@
 import {
-  FavoriteBorderOutlined,
-  LocalConvenienceStoreOutlined,
-} from "@mui/icons-material";
-import { Box, Typography, Button, useTheme, IconButton } from "@mui/material";
+  Box,
+  Typography,
+  Button,
+  useTheme,
+  IconButton,
+  Tabs,
+  Tab,
+} from "@mui/material";
 import {
   Remove as RemoveIcon,
   Add as AddIcon,
   ShoppingBagOutlined as BagIcon,
+  FavoriteBorderOutlined,
 } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import Item from "../../components/Item";
+
 import { addToCart } from "../../state";
 import { shades } from "../../theme";
 
@@ -24,16 +31,10 @@ const ItemDetails = () => {
   const [item, setItem] = useState(null);
   const [items, setItems] = useState([]);
   const [lastItemId, setLastItemId] = useState(0);
-  // console.log(name);
-  // const {
-  //   data: {
-  //     attributes: {
-  //       formats: {
-  //         medium: { url },
-  //       },
-  //     },
-  //   },
-  // } = image;
+
+  const [randomId, setRandomId] = useState(
+    Math.floor(Math.random() * (20 - 4))
+  );
 
   const getItem = async () => {
     const item = await fetch(
@@ -47,7 +48,7 @@ const ItemDetails = () => {
   };
   const getItems = async () => {
     const items = await fetch(
-      `http://localhost:1337/api/items?fields[0]=name`,
+      `http://localhost:1337/api/items?populate=image`,
       {
         method: "GET",
       }
@@ -56,32 +57,47 @@ const ItemDetails = () => {
     setLastItemId(itemsJson.data[itemsJson.data?.length - 1].id);
     setItems(itemsJson.data);
   };
+  const setInitialStates = () => {
+    setCount(1);
+    setValue("description");
+  };
 
   useEffect(() => {
     getItem();
     getItems();
+    setRandomId((prev) => (prev + 1) % 16);
+    setInitialStates();
   }, [itemId]);
+
+  const handleChange = (e, newValue) => {
+    setValue(newValue);
+  };
+
   return (
     <Box width="80%" margin="80px auto">
       <Box
         display="flex"
         justifyContent="center"
-        flexWrap="wrap"
-        columnGap="clamp(10px,20px,40px)"
+        // flexWrap="wrap"
+        columnGap="40px"
       >
         {/* IMAGE */}
-        <Box maxWidth="500px">
+        <Box
+          flex="1 1 40%"
+          mb="40px"
+          // maxWidth="500px"
+        >
           <img
             src={`http://localhost:1337${item?.attributes.image?.data?.attributes?.formats?.medium?.url}`}
             alt={item?.name}
-            // width="300px"
-            // height="400px"
-            maxWidth="500px"
-            style={{ objectFit: "contain", overflow: "hidden" }}
+            width="100%"
+            height="100%"
+            // maxWidth="500px"
+            style={{ objectFit: "contain" }}
           />
         </Box>
         {/* TEXT */}
-        <Box>
+        <Box flec="1 1 50%" mb="40px">
           {/* NAVIGATION */}
           <Box
             display="flex"
@@ -106,56 +122,62 @@ const ItemDetails = () => {
             </Box>
           </Box>
           {/* TITLE AND DESCRIPTION */}
-          <Box>
+          <Box m="65px 0 25px 0">
             <Typography variant="h3">{item?.attributes?.name}</Typography>
             <Typography>£{item?.attributes?.price}</Typography>
-            <Typography variant="subtitle1" mb="1rem">
+            <Typography variant="subtitle1" mt="20px">
               {item?.attributes?.shortDescription}
             </Typography>
-            {/* COUNT AND ADD TO CART BTN */}
-            <Box display="flex" justifyContent="flex-end" mb="1rem">
-              <Box
-                display="flex"
-                alignItems="center"
-                // backgroundColor={shades.neutral[200]}
-                borderRadius="3px"
+          </Box>
+          {/* COUNT AND ADD TO CART BTN */}
+          <Box display="flex" alignItems="center" minHeight="50px">
+            <Box
+              display="flex"
+              alignItems="center"
+              border={`1.5px solid ${shades.neutral[200]}`}
+              mr="20px"
+              p="2px 5px"
+            >
+              <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
+                <RemoveIcon />
+              </IconButton>
+              <Typography
+                color={shades.primary[400]}
+                width="1rem"
+                textAlign="center"
               >
-                <IconButton onClick={() => setCount(Math.max(count - 1, 1))}>
-                  <RemoveIcon />
-                </IconButton>
-                <Typography
-                  color={shades.primary[400]}
-                  width="1rem"
-                  textAlign="center"
-                >
-                  {count}
-                </Typography>
-                <IconButton onClick={() => setCount(count + 1)}>
-                  <AddIcon />
-                </IconButton>
-              </Box>
-              {/* BUTTON */}
-              <Button
-                onClick={() =>
-                  dispatch(addToCart({ item: { ...item, count } }))
-                }
-                sx={{
-                  marginLeft: "10px",
-                  backgroundColor: shades.primary[400],
-                  color: "white",
-                  "&:hover": { backgroundColor: shades.primary[500] },
-                }}
-              >
-                {" "}
-                Add to Cart <BagIcon />
-              </Button>
+                {count}
+              </Typography>
+              <IconButton onClick={() => setCount(count + 1)}>
+                <AddIcon />
+              </IconButton>
             </Box>
+            {/* BUTTON */}
+            <Button
+              onClick={() => {
+                dispatch(addToCart({ item: { ...item, count } }));
+                setCount(1);
+              }}
+              sx={{
+                borderRadius: 0,
+                minWidth: "150px",
+                padding: "10px 40px",
+                marginLeft: "10px",
+                backgroundColor: shades.primary[400],
+                color: "white",
+                "&:hover": { backgroundColor: shades.primary[500] },
+              }}
+            >
+              {" "}
+              Add to Cart <BagIcon />
+            </Button>
           </Box>
           {/* HEART ICON AND CATEGORY */}
-          <Box textAlign="right">
-            <Typography>
-              <FavoriteBorderOutlined /> ADD TO WISHLIST
-            </Typography>
+          <Box>
+            <Box m="20px 0 5px 0" display="flex">
+              <FavoriteBorderOutlined />
+              <Typography sx={{ ml: "5px" }}>ADD TO WISHLIST</Typography>
+            </Box>
             {item?.attributes?.category && (
               <Typography>
                 CATEGORIES:{" "}
@@ -169,57 +191,38 @@ const ItemDetails = () => {
           </Box>
         </Box>
       </Box>
+
       {/* TABS */}
-      {/* <Box className="" width="80%" margin="80px auto">
-        <Typography variant="h2" textAlign="center">
-          Our Feaetured <b>Products</b>
-        </Typography>
-        <Tabs
-          textColor="primary"
-          indicatorColor="primary"
-          value={value}
-          onChange={handleChange}
-          centered
-          TabIndicatorProps={{
-            sx: { display: isNonMobile ? "block" : "none" },
-          }}
-          sx={{
-            m: "25px",
-            "& .MuiTabs-flexContainer": {
-              flexWrap: "wrap",
-            },
-          }}
-        >
-          <Tab label="ALL" value="all" />
-          <Tab label="NEW ARRIVALS" value="newArrival" />
-          <Tab label="BEST SELLERS" value="bestSeller" />
-          <Tab label="TOP RATED" value="topRated" />
+      <Box m="20px 0">
+        <Tabs value={value} onChange={handleChange}>
+          <Tab label="DESCRIPTION" value="description" />
+          <Tab label="REVIEWS" value="reviews" />
         </Tabs>
+      </Box>
+      <Box display="flex" flexWrap="wrap" gap="15px">
+        {value === "description" && (
+          <div>{item?.attributes?.longDescription}</div>
+        )}
+        {value === "reviews" && <div>reviews</div>}
+      </Box>
+
+      {/* RELATED ITEMS */}
+      <Box mt="50px" width="100%">
+        <Typography variant="h3" fontWeight="bold">
+          Related Products
+        </Typography>
         <Box
-          margin="0 auto"
-          display="grid"
-          gridTemplateColumns="repeat(auto-fill,300px)"
-          justifyContent="space-around"
-          rowGap="20px"
+          mt="20px"
+          display="flex"
+          flexWrap="wrap"
+          columnGap="1.33%"
+          justifyContent="space-between"
         >
-          {value === "all" &&
-            items.map((item) => (
-              <Item key={`${item.name}-${item.id}`} item={item} width="300px" />
-            ))}
-          {value === "newArrival" &&
-            newArrival.map((item) => (
-              <Item key={`${item.name}-${item.id}`} item={item} width="300px" />
-            ))}
-          {value === "bestSeller" &&
-            bestSeller.map((item) => (
-              <Item key={`${item.name}-${item.id}`} item={item} width="300px" />
-            ))}
-          {value === "topRated" &&
-            topRated.map((item) => (
-              <Item key={`${item.name}-${item.id}`} item={item} width="300px" />
-            ))}
+          {items.slice(randomId, randomId + 4).map((item, i) => (
+            <Item key={`${Math.random()}=${item.name}-${i}`} item={item} />
+          ))}
         </Box>
-      </Box> */}
+      </Box>
     </Box>
   );
 };
