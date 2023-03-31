@@ -1,6 +1,6 @@
-# Project Name
+# Ride Rite: Online Bicycle Shop Simulation
 
-React Responsive Fullstack Ecommerce App
+React Responsive Fullstack Ecommerce App, with Strapi CMS
 
 ## Description
 
