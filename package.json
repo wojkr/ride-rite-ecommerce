@@ -2,6 +2,7 @@
   "name": "riderite",
   "version": "1.0.0",
   "description": "",
+  "repository": "https://github.com/wojkr/ride-rite-ecommerce",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
