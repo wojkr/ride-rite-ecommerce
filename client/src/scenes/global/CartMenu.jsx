@@ -16,6 +16,7 @@ import {
 } from "../../state/index";
 import { useNavigate } from "react-router-dom";
 import { Collapse } from "@mui/material";
+import { useEffect, useRef } from "react";
 
 const FlexBox = styled(Box)`
   display: flex;
@@ -24,10 +25,28 @@ const FlexBox = styled(Box)`
 `;
 
 const CartMenu = () => {
-  //   const isCartOpen = useSelector((state) => state.cart.isCartOpen);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { cart, isCartOpen } = useSelector((state) => state.cart);
+
+  const cartRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutsideCart = (e) => {
+      if (
+        cartRef.current &&
+        !cartRef.current.contains(e.target) &&
+        isCartOpen
+      ) {
+        dispatch(setIsCartOpen(false));
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutsideCart);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutsideCart);
+    };
+  }, [cartRef, isCartOpen]);
+
   const totalPrice = cart?.reduce((total, item) => {
     return total + item?.attributes?.price * item?.count;
   }, 0);
@@ -58,6 +77,7 @@ const CartMenu = () => {
           padding="30px"
           zIndex="100"
           backgroundColor={shades.neutral[100]}
+          ref={cartRef}
         >
           <Box overflow="auto" height="100%">
             {/*header*/}
